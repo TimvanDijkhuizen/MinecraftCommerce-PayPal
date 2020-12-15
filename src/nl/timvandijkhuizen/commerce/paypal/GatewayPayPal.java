@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.cryptomorin.xseries.XMaterial;
 
+import nl.timvandijkhuizen.commerce.Commerce;
 import nl.timvandijkhuizen.commerce.base.GatewayClient;
 import nl.timvandijkhuizen.commerce.base.GatewayType;
 import nl.timvandijkhuizen.commerce.config.sources.GatewayConfig;
@@ -23,7 +24,7 @@ public class GatewayPayPal implements GatewayType {
     private ConfigOption<File> configTemplate;
 
     public GatewayPayPal() {
-        File pluginRoot = CommercePayPal.getInstance().getDataFolder();
+        File pluginRoot = Commerce.getInstance().getDataFolder();
 
         configClientId = new ConfigOption<>("clientId", "Client Id", XMaterial.NAME_TAG, ConfigTypes.STRING).setRequired(true);
         configClientSecret = new ConfigOption<>("clientSecret", "Client Secret", XMaterial.TRIPWIRE_HOOK, ConfigTypes.PASSWORD).setRequired(true);
