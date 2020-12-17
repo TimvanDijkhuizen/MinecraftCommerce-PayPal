@@ -6,7 +6,7 @@ import nl.timvandijkhuizen.spigotutils.PluginBase;
 public class CommercePayPal extends PluginBase {
 
     @Override
-    public void load() {
+    public void setup() {
         CommerceApi.registerGatewayType(new GatewayPayPal());
     }
 
