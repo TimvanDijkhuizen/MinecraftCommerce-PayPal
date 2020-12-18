@@ -39,6 +39,15 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+
+						<configuration>
+							<relocations>
+								<relocation>
+									<pattern>io.netty</pattern>
+									<shadedPattern>nl.timvandijkhuizen.commerce.io.netty</shadedPattern>
+								</relocation>
+							</relocations>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
