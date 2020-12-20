@@ -1,4 +1,4 @@
-package nl.timvandijkhuizen.commerce.paypal;
+package nl.timvandijkhuizen.commerce.paypal.gateway;
 
 import java.io.File;
 import java.util.Arrays;

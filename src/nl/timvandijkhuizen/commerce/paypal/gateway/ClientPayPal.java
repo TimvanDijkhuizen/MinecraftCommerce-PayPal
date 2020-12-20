@@ -1,4 +1,4 @@
-package nl.timvandijkhuizen.commerce.paypal;
+package nl.timvandijkhuizen.commerce.paypal.gateway;
 
 import java.io.File;
 import java.net.URL;
@@ -238,7 +238,7 @@ public class ClientPayPal implements GatewayClient {
         variables.put("order", order);
 
         // Render template
-        String content = webService.renderTemplate("gateways/paypal/partial.html", variables);
+        String content = webService.renderTemplate("partial.html", variables);
         
         return WebHelper.createResponse(content);
     }
@@ -257,7 +257,7 @@ public class ClientPayPal implements GatewayClient {
         if (template != null) {
             content = webService.renderTemplate(template, variables);
         } else {
-            content = webService.renderTemplate("gateways/paypal/confirmation.html", variables);
+            content = webService.renderTemplate("confirmation.html", variables);
         }
 
         // Return response
