@@ -54,10 +54,11 @@ public class ClientPayPal implements GatewayClient {
     private Gateway gateway;
     private PayPalEnvironment environment;
     private PayPalHttpClient client;
-    private File template;
+    private File partialTemplate;
+    private File confirmationTemplate;
     public DecimalFormat amountFormat;
 
-    public ClientPayPal(Gateway gateway, String clientId, String clientSecret, boolean testMode, File template) {
+    public ClientPayPal(Gateway gateway, String clientId, String clientSecret, boolean testMode, File partialTemplate, File confirmationTemplate) {
         this.gateway = gateway;
         
         // Create environment and client
@@ -70,7 +71,8 @@ public class ClientPayPal implements GatewayClient {
         client = new PayPalHttpClient(environment);
 
         // Set template
-        this.template = template;
+        this.partialTemplate = partialTemplate;
+        this.confirmationTemplate = confirmationTemplate;
         
         // Create format
         DecimalFormatSymbols amountSymbols = new DecimalFormatSymbols();
@@ -238,7 +240,13 @@ public class ClientPayPal implements GatewayClient {
         variables.put("order", order);
 
         // Render template
-        String content = webService.renderTemplate("partial.html", variables);
+        String content = null;
+
+        if (confirmationTemplate != null) {
+            content = webService.renderTemplate(partialTemplate, variables);
+        } else {
+            content = webService.renderTemplate("partial.html", variables);
+        }
         
         return WebHelper.createResponse(content);
     }
@@ -254,8 +262,8 @@ public class ClientPayPal implements GatewayClient {
         // Render template
         String content = null;
 
-        if (template != null) {
-            content = webService.renderTemplate(template, variables);
+        if (confirmationTemplate != null) {
+            content = webService.renderTemplate(confirmationTemplate, variables);
         } else {
             content = webService.renderTemplate("confirmation.html", variables);
         }

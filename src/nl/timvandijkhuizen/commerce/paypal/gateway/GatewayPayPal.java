@@ -21,15 +21,19 @@ public class GatewayPayPal implements GatewayType {
     private ConfigOption<String> configClientId;
     private ConfigOption<String> configClientSecret;
     private ConfigOption<Boolean> configTestMode;
-    private ConfigOption<File> configTemplate;
+    private ConfigOption<File> configPartialTemplate;
+    private ConfigOption<File> configConfirmationTemplate;
 
     public GatewayPayPal() {
         File pluginRoot = Commerce.getInstance().getDataFolder();
+        Pattern[] templatePattern = new Pattern[] { Pattern.compile("^.*\\.html$") };
+        ConfigTypeFile typeTemplate = new ConfigTypeFile(pluginRoot, templatePattern);
 
         configClientId = new ConfigOption<>("clientId", "Client Id", XMaterial.NAME_TAG, ConfigTypes.STRING).setRequired(true);
         configClientSecret = new ConfigOption<>("clientSecret", "Client Secret", XMaterial.TRIPWIRE_HOOK, ConfigTypes.PASSWORD).setRequired(true);
         configTestMode = new ConfigOption<>("testMode", "Test Mode", XMaterial.COMMAND_BLOCK, ConfigTypes.BOOLEAN);
-        configTemplate = new ConfigOption<>("template", "Template", XMaterial.MAP, new ConfigTypeFile(pluginRoot, new Pattern[] { Pattern.compile("^.*\\.html$") }));
+        configPartialTemplate = new ConfigOption<>("partialTemplate", "Partial Template", XMaterial.MAP, typeTemplate);
+        configConfirmationTemplate = new ConfigOption<>("confirmationTemplate", "Confirmation Template", XMaterial.MAP, typeTemplate);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class GatewayPayPal implements GatewayType {
 
     @Override
     public Collection<ConfigOption<?>> getOptions() {
-        return Arrays.asList(configClientId, configClientSecret, configTestMode, configTemplate);
+        return Arrays.asList(configClientId, configClientSecret, configTestMode, configPartialTemplate, configConfirmationTemplate);
     }
 
     @Override
@@ -58,9 +62,10 @@ public class GatewayPayPal implements GatewayType {
         String clientId = configClientId.getValue(config);
         String clientSecret = configClientSecret.getValue(config);
         boolean testMode = configTestMode.getValue(config);
-        File template = configTemplate.getValue(config);
+        File partialTemplate = configPartialTemplate.getValue(config);
+        File confirmationTemplate = configPartialTemplate.getValue(config);
         
-        return new ClientPayPal(gateway, clientId, clientSecret, testMode, template);
+        return new ClientPayPal(gateway, clientId, clientSecret, testMode, partialTemplate, confirmationTemplate);
     }
 
 }
