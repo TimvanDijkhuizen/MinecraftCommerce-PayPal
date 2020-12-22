@@ -1,6 +1,13 @@
 # MinecraftCommerce-PayPal
 This gateway type allows your users to pay using PayPal.
 
+### Requirements
+* [MinecraftCommerce requirements](https://github.com/TimvanDijkhuizen/MinecraftCommerce#requirements)
+* A PayPal business account
+
+### Installation
+[MinecraftCommerce installation guide](https://github.com/TimvanDijkhuizen/MinecraftCommerce#installation)
+
 ### Configuration
 Options with a * are required.
 
