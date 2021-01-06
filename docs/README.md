@@ -1,33 +1,9 @@
 # MinecraftCommerce-PayPal
 This gateway type allows your users to pay using PayPal.
 
-### Requirements
-* [MinecraftCommerce requirements](https://github.com/TimvanDijkhuizen/MinecraftCommerce#requirements)
-* A PayPal business account
+More information:
+https://www.spigotmc.org/resources/minecraft-commerce-paypal.86975
 
-### Installation
-[MinecraftCommerce installation guide](https://github.com/TimvanDijkhuizen/MinecraftCommerce#installation)
+### Documentation
 
-### Configuration
-Options with a * are required.
-
-##### Client Id *
-The domain or IP-address of the database server.
-
-##### Client Secret *
-The port of the database server.
-
-##### Test mode *
-The database to connect to.
-
-##### Storage Username *
-The username to connect with.
-
-##### Storage Password
-The password to connect with.
-
-##### Partial Template
-The template that is shown when an order has been partially paid for.
-
-##### Confirmation Template
-The template that is shown when an order has been completed.
+* [Configuration](CONFIGURATION.md)
