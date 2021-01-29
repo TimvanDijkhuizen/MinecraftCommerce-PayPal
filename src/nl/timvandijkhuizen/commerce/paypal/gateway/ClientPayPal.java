@@ -158,7 +158,7 @@ public class ClientPayPal implements GatewayClient {
     }
 
     private FullHttpResponse handleOrderComplete(nl.timvandijkhuizen.commerce.elements.Order order, URL url) throws Throwable {
-        OrderService orderService = Commerce.getInstance().getService("orders");
+        OrderService orderService = Commerce.getInstance().getService(OrderService.class);
         QueryParameters queryParams = WebHelper.parseQuery(url);
         String paypalOrderId = queryParams.getString("token");
 
@@ -232,7 +232,7 @@ public class ClientPayPal implements GatewayClient {
     }
 
     private FullHttpResponse handleOrderPartial(nl.timvandijkhuizen.commerce.elements.Order order) {
-        WebService webService = Commerce.getInstance().getService("web");
+        WebService webService = Commerce.getInstance().getService(WebService.class);
 
         // Create map with variables
         Map<String, Object> variables = new HashMap<>();
@@ -252,7 +252,7 @@ public class ClientPayPal implements GatewayClient {
     }
     
     private FullHttpResponse handleOrderConfirmation(nl.timvandijkhuizen.commerce.elements.Order order) {
-        WebService webService = Commerce.getInstance().getService("web");
+        WebService webService = Commerce.getInstance().getService(WebService.class);
 
         // Create map with variables
         Map<String, Object> variables = new HashMap<>();
