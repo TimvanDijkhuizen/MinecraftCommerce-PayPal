@@ -1,10 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>timvandijkhuizen</groupId>
-	<artifactId>MinecraftCommerce-PayPal</artifactId>
-	<version>1.1.0</version>
+	<artifactId>minecraft-commerce-paypal</artifactId>
+	<version>1.2.0</version>
 	<name>Minecraft Commerce - PayPal</name>
 	
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/timvandijkhuizen/minecraftcommerce-paypal</url>
+        </repository>
+    </distributionManagement>
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 
@@ -58,6 +66,16 @@
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 		</repository>
+
+        <repository>
+            <id>spigot-utils</id>
+            <url>https://maven.pkg.github.com/timvandijkhuizen/spigotutils</url>
+        </repository>
+
+        <repository>
+            <id>minecraft-commerce</id>
+            <url>https://maven.pkg.github.com/timvandijkhuizen/minecraftcommerce</url>
+        </repository>
 	</repositories>
 
 	<dependencies>
@@ -70,15 +88,15 @@
 
 		<dependency>
 			<groupId>timvandijkhuizen</groupId>
-			<artifactId>SpigotUtils</artifactId>
+			<artifactId>spigot-utils</artifactId>
 			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>timvandijkhuizen</groupId>
-			<artifactId>MinecraftCommerce</artifactId>
-			<version>1.1.0</version>
+			<artifactId>minecraft-commerce</artifactId>
+			<version>1.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 
