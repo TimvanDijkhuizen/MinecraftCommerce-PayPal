@@ -68,13 +68,8 @@
 		</repository>
 
         <repository>
-            <id>spigot-utils</id>
-            <url>https://maven.pkg.github.com/timvandijkhuizen/spigotutils</url>
-        </repository>
-
-        <repository>
-            <id>minecraft-commerce</id>
-            <url>https://maven.pkg.github.com/timvandijkhuizen/minecraftcommerce</url>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/timvandijkhuizen/*</url>
         </repository>
 	</repositories>
 
@@ -89,7 +84,7 @@
 		<dependency>
 			<groupId>timvandijkhuizen</groupId>
 			<artifactId>spigot-utils</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.2</version>
 			<scope>provided</scope>
 		</dependency>
 
