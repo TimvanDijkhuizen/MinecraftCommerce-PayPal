@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>timvandijkhuizen</groupId>
 	<artifactId>minecraft-commerce-paypal</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.2</version>
 	<name>Minecraft Commerce - PayPal</name>
 	
     <distributionManagement>

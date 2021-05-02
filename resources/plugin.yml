@@ -1,7 +1,7 @@
 name: MinecraftCommerce-PayPal
 description: PayPal gateway type for MinecraftCommerce
 author: Tim van Dijkhuizen
-version: "1.2.0"
+version: "1.2.2"
 api-version: 1.13
 main: nl.timvandijkhuizen.commerce.paypal.CommercePayPal
 depend: [SpigotUtils, MinecraftCommerce]
