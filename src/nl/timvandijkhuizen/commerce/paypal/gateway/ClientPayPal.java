@@ -48,7 +48,6 @@ import nl.timvandijkhuizen.spigotutils.helpers.JsonHelper;
 public class ClientPayPal implements GatewayClient {
 
     public static final String COMPLETE_PATH = "/orders/complete";
-    public static final String PARTIAL_PATH = "/orders/partial";
     public static final String CONFIRMATION_PATH = "/orders/confirmation";
 
     private Gateway gateway;
@@ -85,6 +84,10 @@ public class ClientPayPal implements GatewayClient {
     public String createPaymentUrl(nl.timvandijkhuizen.commerce.elements.Order order) throws Throwable {
         PurchaseUnitRequest unit = new PurchaseUnitRequest();
         
+        // Get config
+        YamlConfig pluginConfig = Commerce.getInstance().getConfig();
+        String serverName = pluginConfig.getOptionValue("general.serverName");
+        
         // Get currency
         StoreCurrency currency = order.getCurrency();
         String currencyCode = currency.getCode().getCurrencyCode();
@@ -107,19 +110,22 @@ public class ClientPayPal implements GatewayClient {
         amount.amountBreakdown(new AmountBreakdown().itemTotal(itemTotal));
         unit.amountWithBreakdown(amount);
 
+        // Set description
+        unit.description(serverName + " order #" + order.getId());
+        
         // Create body
         OrderRequest requestBody = new OrderRequest();
 
         requestBody.checkoutPaymentIntent("CAPTURE");
         requestBody.purchaseUnits(Arrays.asList(unit));
-
+        
         // Set application context
-        YamlConfig pluginConfig = Commerce.getInstance().getConfig();
         URL returnUrl = WebHelper.createWebUrl(COMPLETE_PATH + "?order=" + order.getUniqueId());
 
-        ApplicationContext context = new ApplicationContext()
-            .brandName(pluginConfig.getOptionValue("general.serverName"))
-            .returnUrl(returnUrl.toString()).landingPage("LOGIN");
+        ApplicationContext context = new ApplicationContext() //
+            .brandName(serverName) //
+            .returnUrl(returnUrl.toString()) //
+            .landingPage("LOGIN");
 
         requestBody.applicationContext(context);
 
@@ -135,10 +141,11 @@ public class ClientPayPal implements GatewayClient {
         Order paypalOrder = response.result();
         List<LinkDescription> links = paypalOrder.links();
 
-        return links.stream()
-            .filter(link -> link.rel().equals("approve"))
-            .map(link -> link.href())
-            .findFirst().orElse(null);
+        return links.stream() //
+            .filter(link -> link.rel().equals("approve")) //
+            .map(link -> link.href()) //
+            .findFirst() //
+            .orElse(null);
     }
 
     @Override
@@ -148,8 +155,6 @@ public class ClientPayPal implements GatewayClient {
 
         if (path.equals(COMPLETE_PATH)) {
             return handleOrderComplete(order, url);
-        } else if (path.equals(PARTIAL_PATH)) {
-            return handleOrderPartial(order);
         } else if (path.equals(CONFIRMATION_PATH)) {
             return handleOrderConfirmation(order);
         } else {
@@ -220,9 +225,7 @@ public class ClientPayPal implements GatewayClient {
             
             Transaction transaction = new Transaction(orderId, gateway, transactionCurrency, reference, transactionAmount, meta, dateCreated);
             
-            if (!orderService.completeOrder(order, transaction)) {
-                return WebHelper.createRedirectRequest(PARTIAL_PATH + "?order=" + order.getUniqueId());
-            }
+            orderService.completeOrder(order, transaction);
 
             return WebHelper.createRedirectRequest(CONFIRMATION_PATH + "?order=" + order.getUniqueId());
         } catch (Exception e) {
@@ -231,30 +234,8 @@ public class ClientPayPal implements GatewayClient {
         }
     }
 
-    private FullHttpResponse handleOrderPartial(nl.timvandijkhuizen.commerce.elements.Order order) {
-        WebService webService = Commerce.getInstance().getService(WebService.class);
-
-        // Create map with variables
-        Map<String, Object> variables = new HashMap<>();
-
-        variables.put("order", order);
-
-        // Render template
-        String content = null;
-
-        if (confirmationTemplate != null) {
-            content = webService.renderTemplate(partialTemplate, variables);
-        } else {
-            content = webService.renderTemplate("partial.html", variables);
-        }
-        
-        return WebHelper.createResponse(content);
-    }
-    
     private FullHttpResponse handleOrderConfirmation(nl.timvandijkhuizen.commerce.elements.Order order) {
         WebService webService = Commerce.getInstance().getService(WebService.class);
-
-        // Create map with variables
         Map<String, Object> variables = new HashMap<>();
 
         variables.put("order", order);
@@ -262,10 +243,18 @@ public class ClientPayPal implements GatewayClient {
         // Render template
         String content = null;
 
-        if (confirmationTemplate != null) {
-            content = webService.renderTemplate(confirmationTemplate, variables);
+        if(order.isCompleted()) {
+            if (confirmationTemplate != null) {
+                content = webService.renderTemplate(partialTemplate, variables);
+            } else {
+                content = webService.renderTemplate("partial.html", variables);
+            }
         } else {
-            content = webService.renderTemplate("confirmation.html", variables);
+            if (confirmationTemplate != null) {
+                content = webService.renderTemplate(confirmationTemplate, variables);
+            } else {
+                content = webService.renderTemplate("confirmation.html", variables);
+            }
         }
 
         // Return response

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>timvandijkhuizen</groupId>
 	<artifactId>minecraft-commerce-paypal</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<name>Minecraft Commerce - PayPal</name>
 	
     <distributionManagement>
@@ -82,7 +82,7 @@
 		<dependency>
 			<groupId>timvandijkhuizen</groupId>
 			<artifactId>minecraft-commerce</artifactId>
-			<version>1.2.1</version>
+			<version>1.2.2</version>
 			<scope>provided</scope>
 		</dependency>
 
